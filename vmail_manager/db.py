@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from urllib.parse import quote_plus
 
 Base = declarative_base()
 
@@ -15,7 +16,7 @@ def get_db_connection(config):
     else:
         db_connector = f"{config['DB']['dialect'].get(str)}+{config['DB']['driver'].get(str)}"
 
-    db = f"{db_connector}://{config['DB']['username'].get(str)}:{config['DB']['password'].get(str)}@" \
+    db = f"{db_connector}://{config['DB']['username'].get(str)}:{quote_plus(config['DB']['password'].get(str))}@" \
          f"{config['DB']['host'].get(str)}:{config['DB']['port'].get(int)}/{config['DB']['database'].get(str)}"
     engine = create_engine(db)
     try:
