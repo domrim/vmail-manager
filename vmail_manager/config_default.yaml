@@ -4,5 +4,5 @@ DB:
   host: localhost
   port: 3306
   username: vmail-manager
-  password: default_password
+  password:
   database: vmail
