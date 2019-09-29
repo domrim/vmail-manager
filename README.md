@@ -1,4 +1,7 @@
 # vmail-manager
+![PyPI - Status](https://img.shields.io/pypi/status/vmail-manager?style=for-the-badge)
+![PyPI](https://img.shields.io/pypi/v/vmail-manager?style=for-the-badge)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vmail-manager?style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/domrim/vmail-manager?style=for-the-badge)
 
 **DISCLAIMER: THIS APPLICATION IS STILL IN ALPHA/BETA STATE. DO NOT USE IT IN PRODUCTIVE ENVIRONMENTS IF YOU DON'T
