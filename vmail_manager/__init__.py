@@ -5,6 +5,7 @@ import sqlalchemy.dialects
 from .alias import alias
 from .domain import domain
 from .user import user
+from .config import config
 
 cfg = confuse.Configuration("vmail-manager", __name__)
 
@@ -66,3 +67,4 @@ def cli(ctx, dialect, driver, host, port, username, password, database):
 cli.add_command(domain)
 cli.add_command(user)
 cli.add_command(alias)
+cli.add_command(config)
