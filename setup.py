@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setup(
     name='vmail-manager',
-    version='0.1',
+    version='0.1.1',
     author='Dominik Rimpf',
     author_email='dev@d-rimpf.de',
     description='Handy cli interface to manage an vmail-sql-db.',
@@ -13,6 +13,9 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/domrim/vmail-manager/',
     packages=find_packages(),
+    package_data={
+        'vmail_manager': ['config_default.yaml'],
+    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
