@@ -109,7 +109,93 @@ def remove(obj, source, destination, confirmation):
     click.echo(f"Alias mapping from '{source}' to '{destination}' was succesfully deleted.")
     return
 
+@click.command()
+@click.argument('source', type=click.STRING)
+@click.argument('destination', type=click.STRING)
+@click.option(
+    '--yes',
+    'confirmation',
+    type=click.BOOL,
+    is_flag=True,
+    default=False,
+    help='Enable alias without confirmation.'
+)
+@click.pass_obj
+def enable(obj, source, destination, confirmation):
+    """Enables an alias."""
+    src_username, src_domain = split_email(source)
+    dest_username, dest_domain = split_email(destination)
+    conn = get_db_connection(obj)
+
+    try:
+        enable_alias = conn.query(Aliases).filter_by(source_username=src_username, source_domain=src_domain, destination_username=dest_username, destination_domain=dest_domain).one()
+    except NoResultFound:
+        click.echo(f"Alias '{source}' to '{destination}' does not exist.")
+        raise click.Abort
+
+    if enable_alias.enabled:
+        click.echo(f"Alias '{source}' to '{destination}' is already enabled.")
+        raise click.Abort
+
+    if not confirmation:
+        click.confirm(f"Are you sure you want to enable the alias '{source}' to '{destination}'?", abort=True)
+
+    enable_alias.enabled = True
+
+    try:
+        conn.commit()
+    except Exception as e:
+        click.echo(e)
+        raise click.Abort
+
+    click.echo(f"Alias '{source}' to '{destination}' successfully enabled.")
+    return
+
+
+@click.command()
+@click.argument('source', type=click.STRING)
+@click.argument('destination', type=click.STRING)
+@click.option(
+    '--yes',
+    'confirmation',
+    type=click.BOOL,
+    is_flag=True,
+    default=False,
+    help='Disable alias without confirmation.'
+)
+@click.pass_obj
+def disable(obj, source, destination, confirmation):
+    """Disables an alias."""
+    src_username, src_domain = split_email(source)
+    dest_username, dest_domain = split_email(destination)
+    conn = get_db_connection(obj)
+
+    try:
+        disable_alias = conn.query(Aliases).filter_by(source_username=src_username, source_domain=src_domain, destination_username=dest_username, destination_domain=dest_domain).one()
+    except NoResultFound:
+        click.echo(f"Alias '{source}' to '{destination}' does not exist.")
+        raise click.Abort
+
+    if not disable_alias.enabled:
+        click.echo(f"Alias '{source}' to '{destination}' is already disabled.")
+        raise click.Abort
+
+    if not confirmation:
+        click.confirm(f"Are you sure you want to disable the alias '{source}' to '{destination}'?", abort=True)
+    disable_alias.enabled = False
+
+    try:
+        conn.commit()
+    except Exception as e:
+        click.echo(e)
+        raise click.Abort
+
+    click.echo(f"Alias '{source}' to '{destination}' successfully disabled.")
+    return
+
 
 alias.add_command(show)
 alias.add_command(add)
 alias.add_command(remove)
+alias.add_command(enable)
+alias.add_command(disable)
