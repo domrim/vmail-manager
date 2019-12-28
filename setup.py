@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
 
 setup(
     name='vmail-manager',
-    version='0.1.1',
+    version='0.2',
     author='Dominik Rimpf',
     author_email='dev@d-rimpf.de',
     description='Handy cli interface to manage an vmail-sql-db.',
