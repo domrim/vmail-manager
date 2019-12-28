@@ -19,7 +19,7 @@ from [Thomas Leister](https://thomas-leister.de) written in Python3.
 Install it with `pip3 install vmail-manager`
 
 ### manually
-Clone this git on your local machine and go into the directory.
+Clone this git or download the sources from pypi on your local machine and go into the directory.
 
 _Optional: Create a venv and activate it._
 
