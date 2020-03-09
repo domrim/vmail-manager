@@ -100,4 +100,8 @@ volumes:
     temp: {}
   - name: poetry-venvs
     temp: {}
+---
+kind: signature
+hmac: 59f3667fdc0a0260a94adbc97c3cfa5c68acc440ac3a98797823cd1cc8c292f6
+
 ...
