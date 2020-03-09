@@ -7,7 +7,7 @@ authors = ["Dominik Rimpf <dev@d-rimpf.de>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 click = "^7.0"
 confuse = "^1.0.0"
 tabulate = "^0.8.6"
