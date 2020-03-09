@@ -3,7 +3,7 @@ from argon2 import PasswordHasher
 
 def split_email(email):
     """Splits email in username and domain part."""
-    username, domain = email.split('@')
+    username, domain = email.split("@")
     return username, domain
 
 

@@ -18,42 +18,45 @@ def show(obj):
     conn = get_db_connection(obj)
     query = conn.query(Accounts).order_by(Accounts.id)
     result = [
-        {'id': row.id,
-         'email': f"{row.username}@{row.domain}",
-         'password': row.password,
-         'quota': row.quota,
-         'enabled': row.enabled,
-         'sendonly': row.sendonly
-         } for row in query]
+        {
+            "id": row.id,
+            "email": f"{row.username}@{row.domain}",
+            "password": row.password,
+            "quota": row.quota,
+            "enabled": row.enabled,
+            "sendonly": row.sendonly,
+        }
+        for row in query
+    ]
     click.echo(tabulate(result, headers="keys"))
     return
 
 
 @click.command()
-@click.argument('email', type=click.STRING)
+@click.argument("email", type=click.STRING)
 @click.password_option()
 @click.option(
-    '--quota',
-    '-q',
+    "--quota",
+    "-q",
     type=click.INT,
-    help='Maildir quota for the account. Set 0 for unlimited storage.',
+    help="Maildir quota for the account. Set 0 for unlimited storage.",
     default=2048,
     show_default=True,
 )
 @click.option(
-    '--enabled',
-    '-e',
+    "--enabled",
+    "-e",
     type=click.BOOL,
-    help='Enable the account directly.',
+    help="Enable the account directly.",
     default=False,
     show_default=True,
 )
 @click.option(
-    '--sendonly',
-    '-s',
+    "--sendonly",
+    "-s",
     type=click.BOOL,
     is_flag=True,
-    help='Make account send only. So receiving of mails is not possible.',
+    help="Make account send only. So receiving of mails is not possible.",
     default=False,
     show_default=True,
 )
@@ -66,12 +69,14 @@ def add(obj, email, password, quota, enabled, sendonly):
 
     conn = get_db_connection(obj)
     pw_hash = gen_password_hash(password)
-    new_user = Accounts(username=username,
-                        domain=domain,
-                        password=pw_hash,
-                        quota=quota,
-                        enabled=enabled,
-                        sendonly=sendonly)
+    new_user = Accounts(
+        username=username,
+        domain=domain,
+        password=pw_hash,
+        quota=quota,
+        enabled=enabled,
+        sendonly=sendonly,
+    )
 
     conn.add(new_user)
 
@@ -87,24 +92,16 @@ def add(obj, email, password, quota, enabled, sendonly):
 
 
 @click.command()
-@click.argument('email', type=click.STRING)
+@click.argument("email", type=click.STRING)
+@click.option("--quota", "-q", type=click.INT)
+@click.option("--sendonly", "-s", type=click.BOOL)
 @click.option(
-    '--quota',
-    '-q',
-    type=click.INT
-)
-@click.option(
-    '--sendonly',
-    '-s',
-    type=click.BOOL
-)
-@click.option(
-    '--yes',
-    'confirmation',
+    "--yes",
+    "confirmation",
     type=click.BOOL,
     is_flag=True,
     default=False,
-    help='Edit user without confirmation.'
+    help="Edit user without confirmation.",
 )
 @click.pass_obj
 def edit(obj, email, quota, sendonly, confirmation):
@@ -113,24 +110,36 @@ def edit(obj, email, quota, sendonly, confirmation):
     conn = get_db_connection(obj)
 
     try:
-        edit_user = conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        edit_user = (
+            conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        )
     except NoResultFound:
         click.echo(f"User '{email}' does not exist.")
         raise click.Abort
 
     if sendonly is not None:
         if not confirmation:
-            click.confirm(f"Change sendonly flag of user '{email}' from {edit_user.sendonly} to {sendonly}?", abort=True)
+            click.confirm(
+                f"Change sendonly flag of user '{email}' from {edit_user.sendonly} to {sendonly}?",
+                abort=True,
+            )
         edit_user.sendonly = sendonly
         if sendonly:
             edit_user.quota = 0
         if not sendonly and quota is None and edit_user.quota is 0:
-            if not click.confirm(f"User '{email}' will have unlimited quota, are you shure?"):
-                quota = click.prompt(f"Enter new quota for user '{email}' in MB", type=click.INT)
+            if not click.confirm(
+                f"User '{email}' will have unlimited quota, are you shure?"
+            ):
+                quota = click.prompt(
+                    f"Enter new quota for user '{email}' in MB", type=click.INT
+                )
 
     if quota is not None:
         if not confirmation:
-            click.confirm(f"Change quota of user '{email}' from {edit_user.quota} MB to {quota} MB?", abort=True)
+            click.confirm(
+                f"Change quota of user '{email}' from {edit_user.quota} MB to {quota} MB?",
+                abort=True,
+            )
         edit_user.quota = quota
 
     try:
@@ -143,8 +152,8 @@ def edit(obj, email, quota, sendonly, confirmation):
 
 
 @click.command()
-@click.argument('email', type=click.STRING)
-@click.password_option(prompt='Enter new password')
+@click.argument("email", type=click.STRING)
+@click.password_option(prompt="Enter new password")
 @click.pass_obj
 def passwd(obj, email, password):
     """Changes password of user."""
@@ -152,7 +161,9 @@ def passwd(obj, email, password):
     conn = get_db_connection(obj)
 
     try:
-        edit_user = conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        edit_user = (
+            conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        )
     except NoResultFound:
         click.echo(f"User '{email}' does not exist.")
         raise click.Abort
@@ -170,14 +181,14 @@ def passwd(obj, email, password):
 
 
 @click.command()
-@click.argument('email', type=click.STRING)
+@click.argument("email", type=click.STRING)
 @click.option(
-    '--yes',
-    'confirmation',
+    "--yes",
+    "confirmation",
     type=click.BOOL,
     is_flag=True,
     default=False,
-    help='Enable user without confirmation.'
+    help="Enable user without confirmation.",
 )
 @click.pass_obj
 def enable(obj, email, confirmation):
@@ -186,7 +197,9 @@ def enable(obj, email, confirmation):
     conn = get_db_connection(obj)
 
     try:
-        edit_user = conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        edit_user = (
+            conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        )
     except NoResultFound:
         click.echo(f"User '{email}' does not exist.")
         raise click.Abort
@@ -196,7 +209,9 @@ def enable(obj, email, confirmation):
         raise click.Abort
 
     if not confirmation:
-        click.confirm(f"Are you sure you want to enable the account '{email}'?", abort=True)
+        click.confirm(
+            f"Are you sure you want to enable the account '{email}'?", abort=True
+        )
 
     edit_user.enabled = True
 
@@ -211,14 +226,14 @@ def enable(obj, email, confirmation):
 
 
 @click.command()
-@click.argument('email', type=click.STRING)
+@click.argument("email", type=click.STRING)
 @click.option(
-    '--yes',
-    'confirmation',
+    "--yes",
+    "confirmation",
     type=click.BOOL,
     is_flag=True,
     default=False,
-    help='Disable user without confirmation.'
+    help="Disable user without confirmation.",
 )
 @click.pass_obj
 def disable(obj, email, confirmation):
@@ -227,7 +242,9 @@ def disable(obj, email, confirmation):
     conn = get_db_connection(obj)
 
     try:
-        edit_user = conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        edit_user = (
+            conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        )
     except NoResultFound:
         click.echo(f"User '{email}' does not exist.")
         raise click.Abort
@@ -251,14 +268,14 @@ def disable(obj, email, confirmation):
 
 
 @click.command()
-@click.argument('email', type=click.STRING)
+@click.argument("email", type=click.STRING)
 @click.option(
-    '--yes',
-    'confirmation',
+    "--yes",
+    "confirmation",
     type=click.BOOL,
     is_flag=True,
     default=False,
-    help='Delete user without confirmation.'
+    help="Delete user without confirmation.",
 )
 @click.pass_obj
 def remove(obj, email, confirmation):
@@ -267,7 +284,9 @@ def remove(obj, email, confirmation):
     conn = get_db_connection(obj)
 
     try:
-        del_user = conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        del_user = (
+            conn.query(Accounts).filter_by(username=username, domain=domain).one()
+        )
     except NoResultFound:
         click.echo(f"User '{email}' does not exist.")
         raise click.Abort

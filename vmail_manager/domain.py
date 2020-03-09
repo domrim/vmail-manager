@@ -16,13 +16,13 @@ def show(obj):
     """Lists all domains."""
     conn = get_db_connection(obj)
     query = conn.query(Domains).order_by(Domains.id)
-    result = [{'id': row.id, 'domain': row.domain} for row in query]
+    result = [{"id": row.id, "domain": row.domain} for row in query]
     click.echo(tabulate(result, headers="keys"))
     return
 
 
 @click.command()
-@click.argument('domain', type=click.STRING)
+@click.argument("domain", type=click.STRING)
 @click.pass_obj
 def add(obj, domain):
     """Add a domain."""
@@ -39,14 +39,14 @@ def add(obj, domain):
 
 
 @click.command()
-@click.argument('domain', type=click.STRING)
+@click.argument("domain", type=click.STRING)
 @click.option(
-    '--yes',
-    'confirmation',
+    "--yes",
+    "confirmation",
     type=click.BOOL,
     is_flag=True,
     default=False,
-    help='Delete domain without confirmation.'
+    help="Delete domain without confirmation.",
 )
 @click.pass_obj
 def remove(obj, domain, confirmation):
@@ -60,7 +60,9 @@ def remove(obj, domain, confirmation):
         raise click.Abort
 
     if not confirmation:
-        click.confirm(f"Are you sure you want to delete the account '{domain}'?", abort=True)
+        click.confirm(
+            f"Are you sure you want to delete the account '{domain}'?", abort=True
+        )
 
     conn.delete(del_domain)
 
