@@ -1,4 +1,5 @@
 # vmail-manager
+![Drone - Build Status](https://img.shields.io/drone/build/domrim/vmail-manager?style=for-the-badge)
 ![PyPI - Status](https://img.shields.io/pypi/status/vmail-manager?style=for-the-badge)
 ![PyPI](https://img.shields.io/pypi/v/vmail-manager?style=for-the-badge)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vmail-manager?style=for-the-badge)
