@@ -18,12 +18,10 @@ from [Thomas Leister](https://thomas-leister.de) written in Python3.
 ### via pip
 Install it with `pip3 install vmail-manager`
 
-### manually
-Clone this git or download the sources from pypi on your local machine and go into the directory.
+### manually for development
+Clone this git or download the sources from pypi on your local machine and go into the directory. [Poetry](https://python-poetry.org/) is used for dependency mangement, building and publishing.
 
-_Optional: Create a venv and activate it._
-
-Install all requirements with `pip3 install -r requirements.txt`
+Install all requirements with `poetry install`
 
 Run the tool with `./vmail-manager.py` (or add the folder to your path and create an alias to `vmail-manager`)
 
