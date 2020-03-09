@@ -1,0 +1,48 @@
+---
+kind: pipeline
+name: python-3-6
+
+steps:
+- name: lint
+  image: python:3.6
+  commands:
+  - poetry install -E lint
+  - poetry run black --check --diff .
+  - poetry run isort --check-only --diff --recursive -l 88
+- name: build
+  image: python:3.6
+  commands:
+    - poetry build
+
+---
+kind: pipeline
+name: python-3-7
+
+steps:
+- name: lint
+  image: python:3.7
+  commands:
+  - poetry install -E lint
+  - poetry run black --check --diff .
+  - poetry run isort --check-only --diff --recursive -l 88
+- name: build
+  image: python:3.7
+  commands:
+  - poetry build
+
+---
+kind: pipeline
+name: python-3-8
+
+steps:
+- name: lint
+  image: python:3.8
+  commands:
+  - poetry install -E lint
+  - poetry run black --check --diff .
+  - poetry run isort --check-only --diff --recursive -l 88
+- name: build
+  image: python:3.8
+  commands:
+  - poetry build
+...
