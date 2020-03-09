@@ -2,7 +2,7 @@ import click
 from sqlalchemy.orm.exc import NoResultFound
 from tabulate import tabulate
 
-from .db import get_db_connection, Domains
+from .db import Domains, get_db_connection
 
 
 @click.group()

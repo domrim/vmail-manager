@@ -2,8 +2,8 @@ import click
 from sqlalchemy.orm.exc import NoResultFound
 from tabulate import tabulate
 
-from .db import get_db_connection, Accounts
-from .helpers import split_email, gen_password_hash
+from .db import Accounts, get_db_connection
+from .helpers import gen_password_hash, split_email
 
 
 @click.group()

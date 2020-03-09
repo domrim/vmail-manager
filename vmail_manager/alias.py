@@ -1,8 +1,8 @@
 import click
-from tabulate import tabulate
 from sqlalchemy.orm.exc import NoResultFound
+from tabulate import tabulate
 
-from .db import get_db_connection, Aliases
+from .db import Aliases, get_db_connection
 from .helpers import split_email
 
 

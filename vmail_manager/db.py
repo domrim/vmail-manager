@@ -1,10 +1,10 @@
+from urllib.parse import quote_plus
+
 import click
-from sqlalchemy import Column, String, Boolean, Integer
-from sqlalchemy import create_engine, ForeignKey
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from urllib.parse import quote_plus
 
 Base = declarative_base()
 
