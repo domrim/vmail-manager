@@ -6,13 +6,15 @@ steps:
 - name: lint
   image: python:3.6
   commands:
-  - poetry install -E lint
-  - poetry run black --check --diff .
-  - poetry run isort --check-only --diff --recursive -l 88
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - $HOME/.poetry/bin/poetry install -E lint
+  - $HOME/.poetry/bin/poetry run black --check --diff .
+  - $HOME/.poetry/bin/poetry run isort --check-only --diff --recursive -l 88
 - name: build
   image: python:3.6
   commands:
-    - poetry build
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - $HOME/.poetry/bin/poetry build
 
 ---
 kind: pipeline
@@ -22,13 +24,15 @@ steps:
 - name: lint
   image: python:3.7
   commands:
-  - poetry install -E lint
-  - poetry run black --check --diff .
-  - poetry run isort --check-only --diff --recursive -l 88
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - $HOME/.poetry/bin/poetry install -E lint
+  - $HOME/.poetry/bin/poetry run black --check --diff .
+  - $HOME/.poetry/bin/poetry run isort --check-only --diff --recursive -l 88
 - name: build
   image: python:3.7
   commands:
-  - poetry build
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - $HOME/.poetry/bin/poetry build
 
 ---
 kind: pipeline
@@ -38,11 +42,14 @@ steps:
 - name: lint
   image: python:3.8
   commands:
-  - poetry install -E lint
-  - poetry run black --check --diff .
-  - poetry run isort --check-only --diff --recursive -l 88
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - $HOME/.poetry/bin/poetry install -E lint
+  - $HOME/.poetry/bin/poetry run black --check --diff .
+  - $HOME/.poetry/bin/poetry run isort --check-only --diff --recursive -l 88
 - name: build
   image: python:3.8
   commands:
-  - poetry build
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - $HOME/.poetry/bin/poetry build
+
 ...
